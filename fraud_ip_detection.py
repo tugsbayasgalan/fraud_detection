@@ -80,11 +80,6 @@ def main(arguments):
         print "Program is stopped by a user"
         sys.exit()
 
-
-
-
-
-
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser('Please supply the file name and access token for ipinfo library')
