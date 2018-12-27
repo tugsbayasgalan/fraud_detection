@@ -60,6 +60,7 @@ class FraudIpDetection:
                     loc_info = self.cache[ip_address]
                 else:
                     loc_info = self.get_loc_info(ip_address)
+                    self.cache[ip_address] = loc_info
                 self.data_map[ip_address] = AddressInfo(classification, loc_info)
 
     def get_loc_info(self, ip_address):

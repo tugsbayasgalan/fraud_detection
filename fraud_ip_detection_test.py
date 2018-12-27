@@ -32,6 +32,8 @@ class TestScore(unittest.TestCase):
         self.assertTrue(distance == score_fraud)
 
     def test_score_fraud_actual(self):
+        self.assertTrue(len(self.fd_actual.cache) == 2)
+        self.assertTrue(len(self.fd_actual.data_map) == 2)
         score_fraud1 = self.fd_actual.score('159.122.100.42') #France is closer to Amsterdam
         score_fraud2 = self.fd_actual.score('1.1.0.255') #China is closer to Hong Kong
         self.assertTrue(score_fraud1[1] == 'FRAUD')
