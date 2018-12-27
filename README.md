@@ -25,4 +25,6 @@ Therefore the accuracy will remain same even after running the program for long 
 
 3) Ideally, we can parallelize the API calls to ipinfo in the setup phase.
 
-4) Better error handling (input error, bad input etc) 
+4) Better error handling (input error, bad input etc)
+
+5) Better runtime (can partition the ip addresses into buckets so that we can only check inside the bucket)
