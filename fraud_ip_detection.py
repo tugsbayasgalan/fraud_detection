@@ -16,8 +16,8 @@ def compute_distance(ip_address_1, ip_address_2):
     #earth radius in miles
     R = 3959
 
-    lat_difference = math.radians(lat2 - lat1)
-    long_difference = math.radians(long2 - long1)
+    lat_difference = lat2 - lat1
+    long_difference = long2 - long1
 
     #look at https://en.wikipedia.org/wiki/Haversine_formula for the formula
     a = math.sin(lat_difference/2)**2 + math.cos(lat1)*math.cos(lat2)*(math.sin(long_difference/2)**2)
@@ -39,7 +39,7 @@ class AddressInfo:
 
 class FraudIpDetection:
 
-    def __init__(self, filePath, acc_token):
+    def __init__(self, filePath, acc_token, test=False):
 
         self.filePath = filePath
         self.ip_handler = ipinfo.getHandler(acc_token)
@@ -49,6 +49,8 @@ class FraudIpDetection:
         self.cache = {}
         #build the database before scoring ip addresses
         self.parse_data()
+        #testing mode
+        self.test = test
 
     def parse_data(self):
         with open(self.filePath) as f:
@@ -77,10 +79,18 @@ class FraudIpDetection:
         distance, classification = self.find_closest(point_tuple)
         #if the closest point is FRAUD, increase the score by a factor of two
         if classification == FRAUD:
-            return distance*2
-        return distance
+            result = (distance*2.0, classification)
+        else:
+            result = (distance, classification)
+        #if test mode, give more info
+        if self.test:
+            return result
+        return result[0]
+
+
 
     def find_closest(self, point_tuple):
+
         distance_array = [(compute_distance(point_tuple, self.data_map[i].get_location_tuple()),
                           self.data_map[i].get_classification()) for i in self.data_map]
         return min(distance_array, key=lambda x: x[0])
